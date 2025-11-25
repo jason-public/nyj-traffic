@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남양주시 교통정책과 현황</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+        /* Stats */
+        .stat-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.02);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary { background: #dbeafe; color: var(--primary); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+        .badge-secondary { background: #e9d5ff; color: var(--secondary); }
+
+        /* Progress bars */
+        .progress-container {
+            margin: 15px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        /* Info List */
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        /* Accordion */
+        .accordion-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: #e2e8f0;
+        }
+
+        .accordion-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-header i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+            padding: 0 20px 20px;
+        }
+
+        /* Charts placeholder */
+        .chart-container {
+            position: relative;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        /* Route visualization */
+        .route-line {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 15px 0;
+            overflow-x: auto;
+        }
+
+        .route-station {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .route-arrow {
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-tabs {
+                gap: 8px;
+            }
+
+            .nav-tab {
+                padding: 10px 18px;
+                font-size: 0.85rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Color variants for icons */
+        .bg-blue { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .bg-purple { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .bg-cyan { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .bg-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .bg-orange { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .bg-pink { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+        .bg-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+        /* Scroll animation */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-train"></i> 남양주시 교통정책과</h1>
+            <p>철도사업 및 교통시설 현황 대시보드</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-section="overview">
+                <i class="fas fa-chart-pie"></i> 개요
+            </button>
+            <button class="nav-tab" data-section="railway">
+                <i class="fas fa-subway"></i> 철도사업
+            </button>
+            <button class="nav-tab" data-section="gtx">
+                <i class="fas fa-rocket"></i> GTX 노선
+            </button>
+            <button class="nav-tab" data-section="transit">
+                <i class="fas fa-bus"></i> 대중교통
+            </button>
+            <button class="nav-tab" data-section="traffic">
+                <i class="fas fa-traffic-light"></i> 교통시설
+            </button>
+            <button class="nav-tab" data-section="safety">
+                <i class="fas fa-shield-alt"></i> 안전구역
+            </button>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="grid grid-4">
+                <div class="stat-box fade-in-up">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">철도 신규사업</div>
+                </div>
+                <div class="stat-box fade-in-up">
+                    <div class="stat-value">1,209</div>
+                    <div class="stat-label">신호제어기</div>
+                </div>
+                <div class="stat-box fade-in-up">
+                    <div class="stat-value">2,833</div>
+                    <div class="stat-label">횡단보도</div>
+                </div>
+                <div class="stat-box fade-in-up">
+                    <div class="stat-value">128</div>
+                    <div class="stat-label">어린이보호구역</div>
+                </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: 20px;">
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-blue">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">주요 추진사업</div>
+                            <div class="card-subtitle">핵심 철도 인프라 확충</div>
+                        </div>
+                    </div>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>9호선 연장</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">서울강동~하남~남양주 (17.59km)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>GTX-B 노선</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">송도~청량리~마석 (82.8km)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>별내선 연장</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">별내~별내 별가람 (3.55km)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>6호선 연장</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">신내~구리~남양주 (추가 검토)</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-green">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">진접선 운영현황</div>
+                            <div class="card-subtitle">일일 이용객 현황</div>
+                        </div>
+                    </div>
+                    <div class="stat-box" style="margin-bottom: 15px;">
+                        <div class="stat-value">30,935</div>
+                        <div class="stat-label">일 평균 이용객 (2024.10)</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>평일 이용객</span>
+                            <span>33,857명</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-blue" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>휴일 이용객</span>
+                            <span>23,496명</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-purple" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+                        <small style="color: var(--warning);">
+                            <i class="fas fa-info-circle"></i> 연간 운영비: 357억원 / 연간 이용수지: 약 -270억원
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Railway Section -->
+        <section id="railway" class="section">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-blue">
+                        <i class="fas fa-subway"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">상위계획 확정 철도사업</div>
+                        <div class="card-subtitle">4차 국가철도망, 4차 대도시권 광역교통시행계획</div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>9호선 연장</th>
+                                <th>별내선 연장</th>
+                                <th>별내선 의정부연장</th>
+                                <th>6호선 연장</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>반영여부</strong></td>
+                                <td><span class="badge badge-success">본 사업</span></td>
+                                <td><span class="badge badge-success">본 사업</span></td>
+                                <td><span class="badge badge-warning">추가 검토</span></td>
+                                <td><span class="badge badge-warning">추가 검토</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>노선</strong></td>
+                                <td>서울강동~하남~남양주</td>
+                                <td>별내~별내 별가람</td>
+                                <td>별내 별가람~청학리~의정부 탑석</td>
+                                <td>신내~구리~남양주</td>
+                            </tr>
+                            <tr>
+                                <td><strong>연장</strong></td>
+                                <td>17.59km</td>
+                                <td>3.55km</td>
+                                <td>8.7km</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><strong>사업비</strong></td>
+                                <td>2조 8,240억원</td>
+                                <td>4,670억원</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><strong>기대효과</strong></td>
+                                <td>강남직결 노선 확보<br>혁신적 이동시간 단축</td>
+                                <td>단절구간 해소<br>순환철도망 구축</td>
+                                <td>교통수혜지역 확대</td>
+                                <td>유기적인 철도망 완성</td>
+                            </tr>
+                            <tr>
+                                <td><strong>진행사항</strong></td>
+                                <td><span class="badge badge-primary">기본 및 실시설계 (턴키발주 중)</span></td>
+                                <td><span class="badge badge-secondary">예타 완료(미통과), 재기획 추진 중</span></td>
+                                <td colspan="2"><span class="badge badge-warning">2024.11. 제5차 대도시권 광역교통 시행계획 사업건의</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-purple">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">철도운영 개선 사업</div>
+                        <div class="card-subtitle">GTX-B, 경춘선, 강릉선 KTX</div>
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fas fa-rocket"></i> GTX-B 노선</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="route-line">
+                                <span class="route-station">송도</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">청량리</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">별내</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">왕숙</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">평내호평</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">마석</span>
+                            </div>
+                            <ul class="info-list">
+                                <li><i class="fas fa-ruler"></i> 연장: 82.8km</li>
+                                <li><i class="fas fa-won-sign"></i> 사업비: 6조 8,478억원</li>
+                                <li><i class="fas fa-clock"></i> 마석↔청량리 20분</li>
+                                <li><i class="fas fa-clock"></i> 마석↔서울역 25분</li>
+                            </ul>
+                            <div class="timeline" style="margin-top: 15px;">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024.3.7</div>
+                                    <div class="timeline-content">재정구간 착공</div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2025.8.4</div>
+                                    <div class="timeline-content">민자구간 착공 예정</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fas fa-subway"></i> 경춘선 종착역 연장</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="route-line">
+                                <span class="route-station">청량리</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">상봉</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">춘천</span>
+                            </div>
+                            <ul class="info-list">
+                                <li><i class="fas fa-train"></i> 현재 청량리 25회 운행 중</li>
+                                <li><i class="fas fa-bullseye"></i> 종착역 연장 및 증편 추진</li>
+                                <li><i class="fas fa-exchange-alt"></i> 유기적인 환승 체계 구축</li>
+                            </ul>
+                            <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                                2010년 개통 이후 지속적인 정책 건의 중
+                            </p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fas fa-train"></i> 강릉선 KTX 정차</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="route-line">
+                                <span class="route-station">서울역</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">청량리</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station" style="background: var(--success);">덕소</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">강릉</span>
+                                <i class="fas fa-arrow-right route-arrow"></i>
+                                <span class="route-station">동해</span>
+                            </div>
+                            <ul class="info-list">
+                                <li><i class="fas fa-calendar"></i> 2022.7.31 첫 정차</li>
+                                <li><i class="fas fa-clock"></i> 현재: 금,토,일 왕복 4회</li>
+                                <li><i class="fas fa-bullseye"></i> 평일 정차 및 횟수 확대 건의 중</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-cyan">
+                        <i class="fas fa-subway"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">진접선 전철 운영현황</div>
+                        <div class="card-subtitle">서울 당고개~남양주 진접 (14.89km)</div>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px;">운행 현황</h4>
+                        <div class="stat-box">
+                            <div class="stat-value">158회</div>
+                            <div class="stat-label">평일 운행</div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                            출퇴근시 10~15분, 평시 20분 간격
+                        </p>
+                        <div class="stat-box" style="margin-top: 15px;">
+                            <div class="stat-value">118회</div>
+                            <div class="stat-label">휴일 운행</div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                            평시 20~25분 간격
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px;">운영 재정</h4>
+                        <ul class="info-list">
+                            <li>
+                                <i class="fas fa-won-sign"></i>
+                                <div>
+                                    <strong>연간 운영비</strong>
+                                    <p style="font-size: 0.85rem; color: var(--gray);">357억원</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-chart-line"></i>
+                                <div>
+                                    <strong>연간 이용수지</strong>
+                                    <p style="font-size: 0.85rem; color: var(--danger);">약 -270억원 (시비 100%)</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-plus-circle"></i>
+                                <div>
+                                    <strong>증차 시 추가예산</strong>
+                                    <p style="font-size: 0.85rem; color: var(--gray);">약 300억원</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GTX Section -->
+        <section id="gtx" class="section">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-purple">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">신규 2기 GTX 노선</div>
+                        <div class="card-subtitle">GTX-D, E, F 노선 계획</div>
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="stat-box">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🚄</div>
+                        <div class="stat-value">GTX-D</div>
+                        <div class="stat-label">김포 ↔ 팔당 (인천-대장-덕소)</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-primary">185km</span>
+                            <span class="badge badge-secondary">2단계 구간</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                            수도권 남부 동-서 연결
+                        </p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🚄</div>
+                        <div class="stat-value">GTX-E</div>
+                        <div class="stat-label">교산 ↔ 왕숙2(가칭)</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-primary">88km</span>
+                            <span class="badge badge-success">1단계 구간</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                            수도권 북부 동-서 연결<br>(일부 D노선 공용)
+                        </p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🚄</div>
+                        <div class="stat-value">GTX-F</div>
+                        <div class="stat-label">인천 ↔ 원주</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-primary">14km</span>
+                            <span class="badge badge-success">1단계 구간</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray);">
+                            수도권 거점도시 순환 연결<br>(F-D 노선 직결)
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline" style="margin-top: 30px;">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024.1.25</div>
+                        <div class="timeline-content">2기 신규 GTX-D,E,F 노선 발표 (국토교통부)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024.5</div>
+                        <div class="timeline-content">제5차 국가철도망 구축계획 건의</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transit Section -->
+        <section id="transit" class="section">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-green">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">철도(환승) 및 대중교통체계 시설 확충</div>
+                        <div class="card-subtitle">역사 신설 및 BRT/BTX 사업</div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>사업비</th>
+                                <th>시행시기</th>
+                                <th>시행주체</th>
+                                <th>재원분담</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>경춘선 역사신설 (GTX-B정차)</strong></td>
+                                <td>520억원</td>
+                                <td>2028년</td>
+                                <td>국토부, 국가철도공단 등</td>
+                                <td>LH (왕숙지구 광역교통)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>경춘선 역사신설 (환승시설)</strong></td>
+                                <td>480억원</td>
+                                <td>2028년</td>
+                                <td>지자체, LH</td>
+                                <td>LH (왕숙지구 광역교통)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>경의중앙선 역사신설</strong></td>
+                                <td>383억원</td>
+                                <td>2025년</td>
+                                <td>국토부, 국가철도공단 등</td>
+                                <td>LH (왕숙지구 광역교통)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>경의중앙선 역사신설 (환승시설)</strong></td>
+                                <td>350억원</td>
+                                <td>2025년</td>
+                                <td>지자체, LH</td>
+                                <td>LH (왕숙지구 광역교통)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>청량리~평내호평 BRT</strong><br><small>(남부경찰서~평내호평)</small></td>
+                                <td>245억원</td>
+                                <td>2026년</td>
+                                <td>지자체 등</td>
+                                <td>국·도비 (BRT 종합계획)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>강변북로 대중교통개선 (BTX)</strong></td>
+                                <td>323억원</td>
+                                <td>2025년</td>
+                                <td>국토부 등</td>
+                                <td>LH (왕숙지구 광역교통)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-cyan">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">스마트 도시통합 운영센터 건립</div>
+                        <div class="card-subtitle">데이터센터 연계</div>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--gray);">기존 센터</h4>
+                        <ul class="info-list">
+                            <li><i class="fas fa-building"></i> 별내지구 U-City건설사업</li>
+                            <li><i class="fas fa-ruler-combined"></i> 연면적 1,000㎡</li>
+                            <li><i class="fas fa-calendar"></i> 2016.07 구축</li>
+                            <li><i class="fas fa-exclamation-triangle"></i> 물리적 포화상태</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--primary);">신규 센터</h4>
+                        <ul class="info-list">
+                            <li><i class="fas fa-building"></i> 왕숙1,2지구 스마트도시건설사업</li>
+                            <li><i class="fas fa-ruler-combined"></i> 연면적 3,500㎡<br><small>(센터 2,000㎡ + 부속시설 1,500㎡)</small></li>
+                            <li><i class="fas fa-calendar"></i> 2024~2030 구축</li>
+                            <li><i class="fas fa-check-circle"></i> LH 건립비 전액 부담</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #dbeafe; border-radius: 10px;">
+                    <small style="color: var(--primary);">
+                        <i class="fas fa-info-circle"></i> 왕숙1,2지구, 진접2지구, 양정역세권 LH 추진 중인 스마트도시건설사업시설 운영을 위한 필수시설
+                    </small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Traffic Section -->
+        <section id="traffic" class="section">
+            <div class="grid grid-2">
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-orange">
+                            <i class="fas fa-traffic-light"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">교통시설 현황</div>
+                            <div class="card-subtitle">신호 및 안전시설</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="stat-box">
+                            <div class="stat-value">1,209</div>
+                            <div class="stat-label">신호제어기</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">325</div>
+                            <div class="stat-label">단속카메라</div>
+                        </div>
+                    </div>
+                    <h4 style="margin: 20px 0 15px;">단속카메라 세부</h4>
+                    <ul class="info-list">
+                        <li><i class="fas fa-camera"></i> 과속: 46대 (후면 1)</li>
+                        <li><i class="fas fa-camera"></i> 다기능: 275대 (후면 18)</li>
+                        <li><i class="fas fa-camera"></i> 양방향: 4대</li>
+                    </ul>
+                </div>
+
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-blue">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">횡단보도 현황</div>
+                            <div class="card-subtitle">보행자 안전시설</div>
+                        </div>
+                    </div>
+                    <div class="stat-box" style="margin-bottom: 15px;">
+                        <div class="stat-value">2,833</div>
+                        <div class="stat-label">총 횡단보도</div>
+                    </div>
+                    <div class="grid grid-2" style="gap: 10px;">
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>2,030</strong><br><small>신호</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>750</strong><br><small>비신호</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>53</strong><br><small>대각선</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>1,197</strong><br><small>보행신호등</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-purple">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">보행자 편의시설</div>
+                        </div>
+                    </div>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fas fa-assistive-listening-systems"></i>
+                            <div>
+                                <strong>시각장애인 음향신호기</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">43개 (어린이 29, 노인 2)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-microphone-alt"></i>
+                            <div>
+                                <strong>보행자 음성대기장치</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">70개 (어린이 50, 노인 2)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-stopwatch"></i>
+                            <div>
+                                <strong>적색 잔여시간 표시기</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">197개 (어린이 103, 노인 3)</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-green">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">버스정류장 현황</div>
+                        </div>
+                    </div>
+                    <div class="stat-box" style="margin-bottom: 15px;">
+                        <div class="stat-value">1,851</div>
+                        <div class="stat-label">총 정류장</div>
+                    </div>
+                    <div class="grid grid-2" style="gap: 10px;">
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>1,047</strong><br><small>쉘터형</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>40</strong><br><small>표지판</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>512</strong><br><small>무표지형</small>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                            <strong>252</strong><br><small>기타</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-cyan">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">지능형교통시스템</div>
+                        </div>
+                    </div>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fas fa-tv"></i>
+                            <div>
+                                <strong>BIS 안내기</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">정류장 1,048 / 역사 14</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-video"></i>
+                            <div>
+                                <strong>CCTV</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">교통관제 209 / 승강장 601</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-sign"></i>
+                            <div>
+                                <strong>도로전광판(VMS)</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">41개소 (42면)</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-broadcast-tower"></i>
+                            <div>
+                                <strong>교통정보수집장치</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">83개소</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-crosshairs"></i>
+                            <div>
+                                <strong>스마트교차로</strong>
+                                <p style="font-size: 0.85rem; color: var(--gray);">113개소</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-orange">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">교통체계개선사업 현황</div>
+                        <div class="card-subtitle">회전교차로 및 특별교통수단</div>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px;">회전교차로</h4>
+                        <div class="stat-box">
+                            <div class="stat-value">23</div>
+                            <div class="stat-label">총 개소</div>
+                        </div>
+                        <ul class="info-list" style="margin-top: 15px;">
+                            <li><i class="fas fa-landmark"></i> 국도비: 8개소</li>
+                            <li><i class="fas fa-building"></i> 자체: 5개소</li>
+                            <li><i class="fas fa-users"></i> 기타: 10개소<br><small>(도로건설과 2, LH 2, 민간 6)</small></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px;">특별교통수단</h4>
+                        <div class="stat-box">
+                            <div class="stat-value">60</div>
+                            <div class="stat-label">운영 대수</div>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: #d1fae5; border-radius: 10px;">
+                            <small style="color: var(--success);">
+                                <i class="fas fa-check-circle"></i> 법정대수 56대 초과 운영
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-pink">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">차선 현황</div>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="stat-box">
+                        <div class="stat-value">2,865</div>
+                        <div class="stat-label">총 노선</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1,280km</div>
+                        <div class="stat-label">구간거리</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; text-align: center; color: var(--gray);">
+                    시 전체 도로: 1,500km
+                </p>
+            </div>
+        </section>
+
+        <!-- Safety Section -->
+        <section id="safety" class="section">
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-red">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">어린이보호구역 현황</div>
+                        <div class="card-subtitle">총 128개소 (59,265m)</div>
+                    </div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-value">69</div>
+                        <div class="stat-label">초등학교</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">34</div>
+                        <div class="stat-label">단설유치원</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">보육시설</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">특수학교</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: #fef3c7; border-radius: 10px;">
+                    <small style="color: var(--warning);">
+                        <i class="fas fa-info-circle"></i> 병설유치원 56개소 미포함
+                    </small>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-blue">
+                            <i class="fas fa-wheelchair"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">장애인보호구역</div>
+                            <div class="card-subtitle">3개소 (330m)</div>
+                        </div>
+                    </div>
+                    <ul class="info-list">
+                        <li><i class="fas fa-home"></i> 생활시설: 2개소</li>
+                        <li><i class="fas fa-briefcase"></i> 재활작업장: 1개소</li>
+                    </ul>
+                </div>
+
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-icon bg-green">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">노인보호구역</div>
+                            <div class="card-subtitle">8개소 (1,610m)</div>
+                        </div>
+                    </div>
+                    <ul class="info-list">
+                        <li><i class="fas fa-chess"></i> 노인여가복지: 6개소</li>
+                        <li><i class="fas fa-hospital"></i> 노인의료복지: 2개소</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card fade-in-up">
+                <div class="card-header">
+                    <div class="card-icon bg-orange">
+                        <i class="fas fa-traffic-light"></i>
+                    </div>
+                    <div>
+                        <div class="card-title">바닥형 신호등 지역별 현황</div>
+                        <div class="card-subtitle">총 197개소</div>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px; padding: 10px; background: #dbeafe; border-radius: 8px; text-align: center;">
+                            <i class="fas fa-map-marker-alt"></i> 남부 (114개소)
+                        </h4>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>지역</th>
+                                        <th>개소</th>
+                                        <th>비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>와부읍</td><td>16</td><td>원인자 4</td></tr>
+                                    <tr><td>화도읍</td><td>27</td><td>-</td></tr>
+                                    <tr><td>수동면</td><td>4</td><td>-</td></tr>
+                                    <tr><td>호평동</td><td>14</td><td>원인자 1</td></tr>
+                                    <tr><td>평내동</td><td>9</td><td>원인자 2</td></tr>
+                                    <tr><td>금곡·양정동</td><td>7</td><td>원인자 6</td></tr>
+                                    <tr><td>다산1·2동</td><td>37</td><td>원인자 22</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; padding: 10px; background: #e9d5ff; border-radius: 8px; text-align: center;">
+                            <i class="fas fa-map-marker-alt"></i> 북부 (83개소)
+                        </h4>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>지역</th>
+                                        <th>개소</th>
+                                        <th>비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>진접읍</td><td>24</td><td>원인자 3</td></tr>
+                                    <tr><td>진건읍</td><td>7</td><td>-</td></tr>
+                                    <tr><td>오남읍</td><td>15</td><td>-</td></tr>
+                                    <tr><td>퇴계원읍</td><td>5</td><td>-</td></tr>
+                                    <tr><td>별내동·면</td><td>32</td><td>원인자 3</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>남양주시 교통정책과 © 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                // Show selected section
+                const sectionId = tab.dataset.section;
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Trigger animations
+                animateElements();
+            });
+        });
+
+        // Accordion functionality
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Scroll animation
+        function animateElements() {
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, index * 100);
+            });
+        }
+
+        // Initial animation
+        document.addEventListener('DOMContentLoaded', animateElements);
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

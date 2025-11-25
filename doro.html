@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남양주시 도로건설과 현황</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #7c3aed;
+            --accent: #06b6d4; --success: #10b981; --warning: #f59e0b;
+            --danger: #ef4444; --dark: #1e293b; --light: #f8fafc; --gray: #64748b;
+        }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; color: var(--dark);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-radius: 20px; padding: 30px; margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); text-align: center;
+        }
+        .header-icon { font-size: 3rem; margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 10px;
+        }
+        .header p { color: var(--gray); font-size: 1.1rem; }
+        .nav-tabs {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;
+            justify-content: center;
+        }
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9); border: none;
+            padding: 12px 24px; border-radius: 50px; cursor: pointer;
+            font-size: 0.95rem; font-weight: 600; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tab:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .nav-tab i { margin-right: 6px; }
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px;
+            padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); }
+        .card-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;
+        }
+        .card-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: white;
+        }
+        .card-title { font-size: 1.3rem; font-weight: 700; color: var(--dark); }
+        .card-subtitle { font-size: 0.85rem; color: var(--gray); }
+        .grid { display: grid; gap: 20px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .stat-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px; padding: 20px; text-align: center;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .stat-box:hover { transform: scale(1.02); }
+        .stat-box .stat-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.8; }
+        .stat-value {
+            font-size: 2rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.85rem; color: var(--gray); margin-top: 5px; }
+        .project-card {
+            background: rgba(255, 255, 255, 0.95); border-radius: 16px;
+            padding: 25px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; margin-bottom: 20px;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .project-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+        }
+        .project-name {
+            font-size: 1.3rem; font-weight: 700; color: var(--dark);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .project-status {
+            padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+        }
+        .status-complete { background: #d1fae5; color: var(--success); }
+        .status-progress { background: #fef3c7; color: var(--warning); }
+        .status-design { background: #dbeafe; color: var(--primary); }
+        .status-planning { background: #e9d5ff; color: var(--secondary); }
+        .info-item {
+            display: flex; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid #e2e8f0;
+        }
+        .info-item:last-child { border-bottom: none; }
+        .info-item .label { color: var(--gray); display: flex; align-items: center; gap: 8px; }
+        .info-item .value { font-weight: 600; color: var(--dark); }
+        .progress-container { margin: 15px 0; }
+        .progress-label {
+            display: flex; justify-content: space-between;
+            margin-bottom: 8px; font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 10px; background: #e2e8f0;
+            border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; border-radius: 10px;
+            transition: width 1s ease;
+        }
+        .table-container {
+            overflow-x: auto; border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); margin-bottom: 30px;
+        }
+        .table-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; padding: 20px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 15px;
+        }
+        .table-header h3 {
+            font-size: 1.3rem; display: flex; align-items: center; gap: 10px;
+        }
+        .search-box {
+            display: flex; align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px; padding: 8px 15px;
+        }
+        .search-box input {
+            border: none; background: transparent; color: white;
+            outline: none; width: 200px; font-size: 0.9rem;
+        }
+        .search-box input::placeholder { color: rgba(255, 255, 255, 0.7); }
+        .search-box i { color: rgba(255, 255, 255, 0.7); margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th {
+            background: var(--light); color: var(--dark); font-weight: 600;
+            position: sticky; top: 0;
+        }
+        tr:hover { background: #f8fafc; }
+        .badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .badge-primary { background: #dbeafe; color: var(--primary); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+        .bg-blue { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .bg-purple { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .bg-cyan { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .bg-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .bg-orange { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .bg-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .footer {
+            text-align: center; padding: 30px;
+            color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;
+        }
+        .scroll-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; border: none; cursor: pointer;
+            display: none; align-items: center; justify-content: center;
+            font-size: 1.2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .scroll-top:hover { transform: translateY(-5px); }
+        .scroll-top.visible { display: flex; }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 1.8rem; }
+            .header-icon { font-size: 2.5rem; }
+            .nav-tab { padding: 10px 18px; font-size: 0.85rem; }
+            .stat-value { font-size: 1.5rem; }
+            th, td { padding: 10px; font-size: 0.8rem; }
+            .table-header { flex-direction: column; text-align: center; }
+            .search-box input { width: 150px; }
+            .project-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon"><i class="fas fa-road"></i></div>
+            <h1>도로건설과</h1>
+            <p><i class="fas fa-chart-line"></i> 남양주시 도로건설 및 확충 종합 현황</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-section="overview"><i class="fas fa-th-large"></i> 개요</button>
+            <button class="nav-tab" data-section="national"><i class="fas fa-highway"></i> 국도·광역도로</button>
+            <button class="nav-tab" data-section="city"><i class="fas fa-road-circle-check"></i> 시군도·도시계획</button>
+            <button class="nav-tab" data-section="status"><i class="fas fa-chart-bar"></i> 도로현황</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-blue"><i class="fas fa-road"></i></div>
+                    <div><div class="card-title"><i class="fas fa-layer-group"></i> 도로 총괄현황</div><div class="card-subtitle">40개 노선 424.92km</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--danger)"><i class="fas fa-highway"></i></div>
+                        <div class="stat-value">54.2km</div>
+                        <div class="stat-label"><i class="fas fa-route"></i> 고속국도 (4개 노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-road"></i></div>
+                        <div class="stat-value">93km</div>
+                        <div class="stat-label"><i class="fas fa-map-marked"></i> 일반국도 (5개 노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-map-signs"></i></div>
+                        <div class="stat-value">116.2km</div>
+                        <div class="stat-label"><i class="fas fa-location-dot"></i> 지방도·국지도 (5개 노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-city"></i></div>
+                        <div class="stat-value">161.6km</div>
+                        <div class="stat-label"><i class="fas fa-building"></i> 시도 (26개 노선)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon bg-green"><i class="fas fa-percent"></i></div>
+                        <div><div class="card-title"><i class="fas fa-check-circle"></i> 포장률</div></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-road"></i></div>
+                        <div class="stat-value">93%</div>
+                        <div class="stat-label"><i class="fas fa-ruler"></i> 395.14km / 424.92km</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span><i class="fas fa-chart-line"></i> 포장도로</span>
+                            <span>395.14km (93%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-green" style="width: 93%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span><i class="fas fa-road"></i> 비포장도로</span>
+                            <span>29.78km (7%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-orange" style="width: 7%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon bg-purple"><i class="fas fa-tractor"></i></div>
+                        <div><div class="card-title"><i class="fas fa-seedling"></i> 농어촌도로</div></div>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="stat-box">
+                            <div class="stat-icon" style="color: var(--secondary)"><i class="fas fa-route"></i></div>
+                            <div class="stat-value">70개</div>
+                            <div class="stat-label"><i class="fas fa-hashtag"></i> 노선수</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-ruler-horizontal"></i></div>
+                            <div class="stat-value">166km</div>
+                            <div class="stat-label"><i class="fas fa-road"></i> 총 연장</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="label"><i class="fas fa-road"></i> 면도</span>
+                        <span class="value">10개 노선 / 27.6km (포장률 70%)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label"><i class="fas fa-map-pin"></i> 리도</span>
+                        <span class="value">60개 노선 / 138.4km (포장률 79%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-orange"><i class="fas fa-hard-hat"></i></div>
+                    <div><div class="card-title"><i class="fas fa-chart-pie"></i> 사업 추진현황</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-value">준공</div>
+                        <div class="stat-label"><i class="fas fa-flag-checkered"></i> 완료된 사업</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-spinner"></i></div>
+                        <div class="stat-value">공사중</div>
+                        <div class="stat-label"><i class="fas fa-hammer"></i> 진행중인 사업</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-drafting-compass"></i></div>
+                        <div class="stat-value">설계중</div>
+                        <div class="stat-label"><i class="fas fa-pencil-ruler"></i> 설계단계</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--secondary)"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="stat-value">계획</div>
+                        <div class="stat-label"><i class="fas fa-list-check"></i> 계획단계</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- National Roads Section -->
+        <section id="national" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-red"><i class="fas fa-highway"></i></div>
+                    <div><div class="card-title"><i class="fas fa-road"></i> 국도·국지도·지방도 순환도로망</div></div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-highway"></i> 화도-포천 고속도로 (수도권제2순환)</div>
+                    <div class="project-status status-complete"><i class="fas fa-check-circle"></i> 준공</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">국토교통부 서울지방국토관리청</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=28.71km / B=23.4m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1조 4,836억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar-check"></i> 준공일</span>
+                    <span class="value">2024.02</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-highway"></i> 화도-양평 고속도로 (수도권제2순환)</div>
+                    <div class="project-status status-complete"><i class="fas fa-check-circle"></i> 준공</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">국토교통부 서울지방국토관리청</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=17.61km / B=21m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">7조 9,580억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar-check"></i> 준공일</span>
+                    <span class="value">2023.12</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-road"></i> 제2경춘국도 (남양주~춘천)</div>
+                    <div class="project-status status-design"><i class="fas fa-drafting-compass"></i> 설계중</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">국토교통부 서울·원주지방국토관리청</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=33.6km / B=20m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1조 2,862억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-clipboard-check"></i> 현재상황</span>
+                    <span class="value">2024.12 실시설계용역 준공</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 향후계획</span>
+                    <span class="value">2025년 하반기 공사 발주 예정</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-route"></i> 국지도98호선 (오남~수동)</div>
+                    <div class="project-status status-complete"><i class="fas fa-check-circle"></i> 준공</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">경기도 건설본부 북부도로과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=8.13km / B=18.5m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">2,603억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar-check"></i> 준공일</span>
+                    <span class="value">2024.02</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 추가사업</span>
+                    <span class="value">2028.05 오남교차로 입체화 준공 예정</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-road-circle-xmark"></i> 지방도387호선 (화도~운수)</div>
+                    <div class="project-status status-progress"><i class="fas fa-spinner"></i> 공사중 (13.2%)</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">경기도 건설본부 북부도로과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=4.52km / B=21m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1,781억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 준공예정</span>
+                    <span class="value">2029.09</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span><i class="fas fa-chart-line"></i> 공정률</span>
+                        <span>13.2%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-orange" style="width: 13.2%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-map-signs"></i> 지방도387호선 (내방~연하)</div>
+                    <div class="project-status status-design"><i class="fas fa-drafting-compass"></i> 설계중</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">경기도 건설본부 북부도로과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=2.6km / B=10m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">481억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-clipboard-check"></i> 현재상황</span>
+                    <span class="value">실시설계용역 중</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 준공예정</span>
+                    <span class="value">2026.06 용역 준공</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-location-dot"></i> 지방도383호선 (진건~오남)</div>
+                    <div class="project-status status-planning"><i class="fas fa-clipboard-list"></i> 감정평가</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">경기도 건설본부 북부도로과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=4.95km / B=11~17m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1,046억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 향후계획</span>
+                    <span class="value">2026년 상반기 보상 협의</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-road-bridge"></i> 국지도86호선 (와부~화도)</div>
+                    <div class="project-status status-progress"><i class="fas fa-spinner"></i> 공사중 (92%)</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">경기도 건설본부 북부도로과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=4.3km / B=10.5m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">845억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 준공예정</span>
+                    <span class="value">2025.12</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span><i class="fas fa-chart-line"></i> 공정률</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-green" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-road-circle-check"></i> 국도45호선 (팔당대교~와부)</div>
+                    <div class="project-status status-progress"><i class="fas fa-spinner"></i> 공사중 (87%)</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">국토교통부 서울지방국토관리청</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=5.1km / B=27~30.5m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1,363억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 준공예정</span>
+                    <span class="value">2026.08</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span><i class="fas fa-chart-line"></i> 공정률</span>
+                        <span>86.95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill bg-green" style="width: 86.95%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name"><i class="fas fa-highway"></i> 중부연결 고속도로 (진접~하남)</div>
+                    <div class="project-status status-planning"><i class="fas fa-clipboard-list"></i> 행정절차 이행중</div>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-building"></i> 시행주체</span>
+                    <span class="value">국토교통부 도로투자지원과</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-ruler"></i> 사업량</span>
+                    <span class="value">L=27.05km / 4차로</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-won-sign"></i> 사업비</span>
+                    <span class="value">1조 3,294억원</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-clipboard-check"></i> 현재상황</span>
+                    <span class="value">전략환경영향평가 진행중</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><i class="fas fa-calendar"></i> 향후계획</span>
+                    <span class="value">2025년 협의 / 2026년 제3자제안공고</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- City Roads Section -->
+        <section id="city" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-cyan"><i class="fas fa-city"></i></div>
+                    <div><div class="card-title"><i class="fas fa-road"></i> 시군도·도시계획도로</div><div class="card-subtitle">총 50여개 사업 추진</div></div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-list"></i> 주요 도로건설 사업 현황</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="사업명 검색..." onkeyup="searchTable(this, 'city-table')">
+                    </div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="city-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-project-diagram"></i> 사업명</th>
+                                <th><i class="fas fa-won-sign"></i> 사업비(억원)</th>
+                                <th><i class="fas fa-ruler"></i> 사업량</th>
+                                <th><i class="fas fa-tasks"></i> 추진현황</th>
+                                <th><i class="fas fa-flag-checkered"></i> 비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>시도8호선(차산~삼봉)</td><td>363</td><td>L=2.1km B=14.5m</td><td><span class="badge badge-success">2024.09 준공</span></td><td>공약</td></tr>
+                            <tr><td>시도9호선(마석~송천)</td><td>1,401</td><td>L=4.2km B=14.7~24.2m</td><td><span class="badge badge-primary">사업계획 조정</span></td><td>공약</td></tr>
+                            <tr><td>농어촌102(창현~차산)</td><td>203</td><td>L=1.85km B=8~10m</td><td><span class="badge badge-success">2024.11 준공</span></td><td>공약</td></tr>
+                            <tr><td>화도녹촌리 진입도로</td><td>70</td><td>L=1.178km B=6~9m</td><td><span class="badge badge-success">2024.11 준공</span></td><td>공약</td></tr>
+                            <tr><td>차산리예비군훈련장</td><td>31</td><td>L=620m B=8m</td><td><span class="badge badge-success">2024.10 준공</span></td><td>공약</td></tr>
+                            <tr><td>오남시가지 통과도로</td><td>891</td><td>L=2.22km B=20~25m</td><td><span class="badge badge-success">2025.08 완료</span></td><td>공약</td></tr>
+                            <tr><td>퇴계원 도시계획(대3-2)</td><td>347</td><td>L=685m B=25m</td><td><span class="badge badge-warning">공사중</span></td><td>공약</td></tr>
+                            <tr><td>화도 맹골마을</td><td>60</td><td>L=600m B=6~8m</td><td><span class="badge badge-primary">보상협의(87.4%)</span></td><td>공약</td></tr>
+                            <tr><td>가곡초 통학로</td><td>79</td><td>L=470m B=10m</td><td><span class="badge badge-primary">보상협의(63%)</span></td><td>공약</td></tr>
+                            <tr><td>농어촌210(원덕~중광)</td><td>126</td><td>L=251m B=20m</td><td><span class="badge badge-warning">공사중(68.8%)</span></td><td>-</td></tr>
+                            <tr><td>진접장현(소1-3호)</td><td>89</td><td>L=515m B=10m</td><td><span class="badge badge-primary">설계중(2구간)</span></td><td>-</td></tr>
+                            <tr><td>진벌리 마을안길</td><td>55</td><td>L=336m B=10m</td><td><span class="badge badge-warning">공사중(10%)</span></td><td>-</td></tr>
+                            <tr><td>금곡리 바람골길</td><td>139</td><td>L=750m B=10m</td><td><span class="badge badge-primary">보상협의(96.5%)</span></td><td>-</td></tr>
+                            <tr><td>오남초 통학로</td><td>25</td><td>L=70m B=8m</td><td><span class="badge badge-warning">공사중(5%)</span></td><td>-</td></tr>
+                            <tr><td>오남호수공원 진입로</td><td>92</td><td>L=830m B=6.5~10m</td><td><span class="badge badge-success">2025.09 완료</span></td><td>-</td></tr>
+                            <tr><td>퇴계원초 통학로</td><td>37</td><td>L=140m B=9.2m</td><td><span class="badge badge-success">2025.08 완료</span></td><td>-</td></tr>
+                            <tr><td>수동 가양초 통학로</td><td>11</td><td>L=55m B=10m</td><td><span class="badge badge-warning">2025.10 착공</span></td><td>-</td></tr>
+                            <tr><td>송촌초교 진입로</td><td>30</td><td>L=300m B=10m</td><td><span class="badge badge-success">2025.01 완료</span></td><td>-</td></tr>
+                            <tr><td>삼패동 한강진입로</td><td>42</td><td>L=200m B=10m</td><td><span class="badge badge-success">2025.04 완료</span></td><td>-</td></tr>
+                            <tr><td>별내-중계 광역도로</td><td>2,500</td><td>L=3.5km (4차로)</td><td><span class="badge badge-primary">타당성조사중</span></td><td>서울시</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section id="status" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-purple"><i class="fas fa-chart-bar"></i></div>
+                    <div><div class="card-title"><i class="fas fa-road"></i> 도로 등급별 현황</div></div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-table"></i> 도로 총괄 현황</h3>
+                </div>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-layer-group"></i> 구분</th>
+                                <th><i class="fas fa-hashtag"></i> 노선</th>
+                                <th><i class="fas fa-ruler-horizontal"></i> 연장(km)</th>
+                                <th><i class="fas fa-road"></i> 포장(km)</th>
+                                <th><i class="fas fa-mountain"></i> 비포장(km)</th>
+                                <th><i class="fas fa-percent"></i> 포장율(%)</th>
+                                <th><i class="fas fa-car-side"></i> 중용구간(km)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-highway"></i> 고속국도</td>
+                                <td>4</td>
+                                <td>54.2</td>
+                                <td>54.2</td>
+                                <td>0</td>
+                                <td>100</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-road"></i> 일반국도</td>
+                                <td>5</td>
+                                <td>92.97</td>
+                                <td>92.97</td>
+                                <td>0</td>
+                                <td>100</td>
+                                <td>10.7</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-map-signs"></i> 지방도</td>
+                                <td>3</td>
+                                <td>52.5</td>
+                                <td>39.89</td>
+                                <td>12.61</td>
+                                <td>75.98</td>
+                                <td>4.1</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-route"></i> 국지도</td>
+                                <td>2</td>
+                                <td>63.7</td>
+                                <td>57.2</td>
+                                <td>6.5</td>
+                                <td>89.7</td>
+                                <td>9.2</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-city"></i> 시도</td>
+                                <td>26</td>
+                                <td>161.55</td>
+                                <td>150.88</td>
+                                <td>10.67</td>
+                                <td>93.4</td>
+                                <td>-</td>
+                            </tr>
+                            <tr style="background: #f0f9ff; font-weight: 700;">
+                                <td><i class="fas fa-calculator"></i> 합계</td>
+                                <td>40</td>
+                                <td>424.92</td>
+                                <td>395.14</td>
+                                <td>29.78</td>
+                                <td>93</td>
+                                <td>24</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-green"><i class="fas fa-tractor"></i></div>
+                    <div><div class="card-title"><i class="fas fa-seedling"></i> 농어촌도로 등급별 현황</div></div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-table"></i> 농어촌도로 상세</h3>
+                </div>
+                <div style="overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-layer-group"></i> 등급</th>
+                                <th><i class="fas fa-hashtag"></i> 노선수</th>
+                                <th><i class="fas fa-ruler-horizontal"></i> 연장(km)</th>
+                                <th><i class="fas fa-road"></i> 포장(km)</th>
+                                <th><i class="fas fa-mountain"></i> 비포장(km)</th>
+                                <th><i class="fas fa-percent"></i> 포장율(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-road"></i> 면도</td>
+                                <td>10</td>
+                                <td>27.6</td>
+                                <td>19.4</td>
+                                <td>8.2</td>
+                                <td>70</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-map-pin"></i> 리도</td>
+                                <td>60</td>
+                                <td>138.4</td>
+                                <td>109.4</td>
+                                <td>29.0</td>
+                                <td>79</td>
+                            </tr>
+                            <tr style="background: #f0f9ff; font-weight: 700;">
+                                <td><i class="fas fa-calculator"></i> 합계</td>
+                                <td>70</td>
+                                <td>166.0</td>
+                                <td>128.8</td>
+                                <td>37.2</td>
+                                <td>77.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="stat-box">
+                    <div class="stat-icon" style="color: var(--success)"><i class="fas fa-road"></i></div>
+                    <div class="stat-value">93%</div>
+                    <div class="stat-label"><i class="fas fa-check-circle"></i> 전체 포장률</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-layer-group"></i></div>
+                    <div class="stat-value">40개</div>
+                    <div class="stat-label"><i class="fas fa-route"></i> 총 노선 수</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-ruler-horizontal"></i></div>
+                    <div class="stat-value">425km</div>
+                    <div class="stat-label"><i class="fas fa-road"></i> 총 연장</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p><i class="fas fa-copyright"></i> 2025 남양주시 도로건설과. <i class="fas fa-code"></i> All rights reserved.</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+
+        function searchTable(input, tableId) {
+            const filter = input.value.toLowerCase();
+            const rows = document.getElementById(tableId).getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) { found = true; break; }
+                }
+                rows[i].style.display = found ? '' : 'none';
+            }
+        }
+
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.querySelector('.scroll-top');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+    </script>
+</body>
+</html>

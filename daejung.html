@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남양주시 대중교통과 현황</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb; --primary-dark: #1d4ed8; --secondary: #7c3aed;
+            --accent: #06b6d4; --success: #10b981; --warning: #f59e0b;
+            --danger: #ef4444; --dark: #1e293b; --light: #f8fafc; --gray: #64748b;
+        }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; color: var(--dark);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-radius: 20px; padding: 30px; margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); text-align: center;
+        }
+        .header-icon { font-size: 3rem; margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 10px;
+        }
+        .header p { color: var(--gray); font-size: 1.1rem; }
+        .nav-tabs {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;
+            justify-content: center;
+        }
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9); border: none;
+            padding: 12px 24px; border-radius: 50px; cursor: pointer;
+            font-size: 0.95rem; font-weight: 600; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tab:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .nav-tab i { margin-right: 6px; }
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px;
+            padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); }
+        .card-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            padding-bottom: 15px; border-bottom: 2px solid #f1f5f9;
+        }
+        .card-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: white;
+        }
+        .card-title { font-size: 1.3rem; font-weight: 700; color: var(--dark); }
+        .card-subtitle { font-size: 0.85rem; color: var(--gray); }
+        .grid { display: grid; gap: 20px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .grid-5 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        .stat-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px; padding: 20px; text-align: center;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .stat-box:hover { transform: scale(1.02); }
+        .stat-box .stat-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.8; }
+        .stat-value {
+            font-size: 2rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.85rem; color: var(--gray); margin-top: 5px; }
+        .table-container {
+            overflow-x: auto; border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); margin-bottom: 30px;
+        }
+        .table-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; padding: 20px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 15px;
+        }
+        .table-header h3 {
+            font-size: 1.3rem; display: flex; align-items: center; gap: 10px;
+        }
+        .search-box {
+            display: flex; align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px; padding: 8px 15px;
+        }
+        .search-box input {
+            border: none; background: transparent; color: white;
+            outline: none; width: 200px; font-size: 0.9rem;
+        }
+        .search-box input::placeholder { color: rgba(255, 255, 255, 0.7); }
+        .search-box i { color: rgba(255, 255, 255, 0.7); margin-right: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th {
+            background: var(--light); color: var(--dark); font-weight: 600;
+            position: sticky; top: 0;
+        }
+        tr:hover { background: #f8fafc; }
+        .badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .badge-primary { background: #dbeafe; color: var(--primary); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+        .badge-secondary { background: #e9d5ff; color: var(--secondary); }
+        .info-list { list-style: none; }
+        .info-list li {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 12px 0; border-bottom: 1px solid #f1f5f9;
+        }
+        .info-list li:last-child { border-bottom: none; }
+        .info-list i { color: var(--primary); margin-top: 3px; font-size: 1.1rem; }
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; margin-bottom: 30px;
+        }
+        .info-card {
+            background: rgba(255, 255, 255, 0.95); border-radius: 16px;
+            padding: 25px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        .info-card h4 {
+            color: var(--dark); margin-bottom: 20px; font-size: 1.1rem;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .info-card h4 i { font-size: 1.3rem; }
+        .info-item {
+            display: flex; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid #e2e8f0;
+        }
+        .info-item:last-child { border-bottom: none; }
+        .info-item .label { color: var(--gray); display: flex; align-items: center; gap: 8px; }
+        .info-item .label i { font-size: 0.9rem; }
+        .info-item .value { font-weight: 600; color: var(--dark); }
+        .bus-card {
+            background: rgba(255, 255, 255, 0.95); border-radius: 16px;
+            padding: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .bus-card:hover { transform: translateY(-5px); }
+        .bus-number {
+            font-size: 1.5rem; font-weight: 700;
+            display: inline-block; padding: 8px 16px;
+            border-radius: 8px; color: white; margin-bottom: 10px;
+        }
+        .bus-route {
+            font-size: 0.9rem; color: var(--gray);
+            display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
+        }
+        .progress-container { margin: 15px 0; }
+        .progress-label {
+            display: flex; justify-content: space-between;
+            margin-bottom: 8px; font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 10px; background: #e2e8f0;
+            border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; border-radius: 10px;
+            transition: width 1s ease;
+        }
+        .bg-blue { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .bg-purple { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .bg-cyan { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .bg-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .bg-orange { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .bg-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .bg-pink { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+        .footer {
+            text-align: center; padding: 30px;
+            color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;
+        }
+        .scroll-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; border: none; cursor: pointer;
+            display: none; align-items: center; justify-content: center;
+            font-size: 1.2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease; z-index: 1000;
+        }
+        .scroll-top:hover { transform: translateY(-5px); }
+        .scroll-top.visible { display: flex; }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 1.8rem; }
+            .header-icon { font-size: 2.5rem; }
+            .nav-tab { padding: 10px 18px; font-size: 0.85rem; }
+            .stat-value { font-size: 1.5rem; }
+            th, td { padding: 10px; font-size: 0.8rem; }
+            .table-header { flex-direction: column; text-align: center; }
+            .search-box input { width: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon"><i class="fas fa-bus"></i></div>
+            <h1>대중교통과</h1>
+            <p><i class="fas fa-chart-line"></i> 남양주시 대중교통 종합 현황 정보</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-section="overview"><i class="fas fa-th-large"></i> 개요</button>
+            <button class="nav-tab" data-section="bus"><i class="fas fa-bus"></i> 버스현황</button>
+            <button class="nav-tab" data-section="express"><i class="fas fa-rocket"></i> 광역급행</button>
+            <button class="nav-tab" data-section="thankyou"><i class="fas fa-heart"></i> 땡큐버스</button>
+            <button class="nav-tab" data-section="taxi"><i class="fas fa-taxi"></i> 택시</button>
+            <button class="nav-tab" data-section="airport"><i class="fas fa-plane"></i> 공항버스</button>
+            <button class="nav-tab" data-section="lowfloor"><i class="fas fa-wheelchair"></i> 저상버스</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-blue"><i class="fas fa-chart-pie"></i></div>
+                    <div><div class="card-title"><i class="fas fa-percentage"></i> 남양주시 수송분담률</div><div class="card-subtitle">2024년 기준</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-car"></i></div>
+                        <div class="stat-value">60.08%</div>
+                        <div class="stat-label"><i class="fas fa-car-side"></i> 승용차 (545,128통행/일)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-bus"></i></div>
+                        <div class="stat-value">27.26%</div>
+                        <div class="stat-label"><i class="fas fa-bus-alt"></i> 버스 (247,372통행/일)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-train"></i></div>
+                        <div class="stat-value">8.35%</div>
+                        <div class="stat-label"><i class="fas fa-subway"></i> 철도 (75,771통행/일)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-taxi"></i></div>
+                        <div class="stat-value">4.31%</div>
+                        <div class="stat-label"><i class="fas fa-car"></i> 택시 (39,111통행/일)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-green"><i class="fas fa-bus"></i></div>
+                    <div><div class="card-title"><i class="fas fa-layer-group"></i> 버스 현황</div><div class="card-subtitle">총 125개 노선 729대</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--danger)"><i class="fas fa-rocket"></i></div>
+                        <div class="stat-value">49대</div>
+                        <div class="stat-label"><i class="fas fa-forward"></i> 광역급행 (5노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-chair"></i></div>
+                        <div class="stat-value">180대</div>
+                        <div class="stat-label"><i class="fas fa-couch"></i> 직행좌석 (23노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-bus-simple"></i></div>
+                        <div class="stat-value">399대</div>
+                        <div class="stat-label"><i class="fas fa-city"></i> 일반시내 (67노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-house"></i></div>
+                        <div class="stat-value">101대</div>
+                        <div class="stat-label"><i class="fas fa-map-marked"></i> 마을버스 (30노선)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-purple"><i class="fas fa-users"></i></div>
+                    <div><div class="card-title"><i class="fas fa-chart-line"></i> 일일 이용객</div><div class="card-subtitle">2025년 10월 기준</div></div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4><i class="fas fa-rocket" style="color:var(--danger)"></i> 광역버스</h4>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="color: var(--danger)"><i class="fas fa-user-group"></i></div>
+                            <div class="stat-value">23,501</div>
+                            <div class="stat-label"><i class="fas fa-users"></i> 일 평균 승차</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <h4><i class="fas fa-bus" style="color:var(--primary)"></i> 시내버스</h4>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-user-group"></i></div>
+                            <div class="stat-value">136,305</div>
+                            <div class="stat-label"><i class="fas fa-users"></i> 일 평균 승차</div>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <h4><i class="fas fa-house" style="color:var(--success)"></i> 마을버스</h4>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="color: var(--success)"><i class="fas fa-user-group"></i></div>
+                            <div class="stat-value">31,749</div>
+                            <div class="stat-label"><i class="fas fa-users"></i> 일 평균 승차</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-orange"><i class="fas fa-layer-double"></i></div>
+                    <div><div class="card-title"><i class="fas fa-bus"></i> 2층버스 운행</div><div class="card-subtitle">총 7개 노선 37대 운행</div></div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-layer-group"></i></div>
+                        <div class="stat-value">40대</div>
+                        <div class="stat-label"><i class="fas fa-box"></i> 총 도입 (디젤 36 / 전기 4)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-value">37대</div>
+                        <div class="stat-label"><i class="fas fa-play"></i> 현재 운행 중</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-plug"></i></div>
+                        <div class="stat-value">4대</div>
+                        <div class="stat-label"><i class="fas fa-leaf"></i> 전기 2층버스</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bus Section -->
+        <section id="bus" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-blue"><i class="fas fa-chair"></i></div>
+                    <div><div class="card-title"><i class="fas fa-route"></i> 직행좌석버스</div><div class="card-subtitle">23개 노선 180대 (2층버스 33대 포함)</div></div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="bus-card">
+                        <div><span class="badge badge-danger"><i class="fas fa-map-marker-alt"></i> 진접오남</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">70대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 8개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 11, 100, 105, 105-1, 2000, 2000-1, 7007, 8012
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div><span class="badge badge-primary"><i class="fas fa-map-marker-alt"></i> 별내</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">13대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 1개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 1001
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div><span class="badge badge-success"><i class="fas fa-map-marker-alt"></i> 다산</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">17대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 2개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 1003, 1006
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div><span class="badge badge-secondary"><i class="fas fa-map-marker-alt"></i> 호평평내</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">8대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 2개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 1000, 1000-1
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div><span class="badge badge-warning"><i class="fas fa-map-marker-alt"></i> 화도</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">44대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 6개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 1100, 1200, 1200-1, 8001, 8002, 8002-1
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div><span class="badge badge-primary"><i class="fas fa-map-marker-alt"></i> 와부</span></div>
+                        <div style="margin-top: 10px">
+                            <div class="stat-box">
+                                <div class="stat-value">28대</div>
+                                <div class="stat-label"><i class="fas fa-bus"></i> 4개 노선</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-route"></i> 1660, 1670, 1670-1, 1700
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-list"></i> 직행좌석버스 상세 노선</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="노선 검색..." onkeyup="searchTable(this, 'express-table')">
+                    </div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="express-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-map-pin"></i> 권역</th>
+                                <th><i class="fas fa-bus"></i> 노선번호</th>
+                                <th><i class="fas fa-building"></i> 운수업체</th>
+                                <th><i class="fas fa-location-dot"></i> 기점</th>
+                                <th><i class="fas fa-flag-checkered"></i> 종점</th>
+                                <th><i class="fas fa-hashtag"></i> 대수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>진접</td><td><span class="badge badge-primary">100</span></td><td>대원운수</td><td>진벌리</td><td>강변역</td><td>9</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-primary">105</span></td><td>대원운수</td><td>진벌리</td><td>불암산역</td><td>6</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-primary">105-1</span></td><td>대원운수</td><td>광릉내</td><td>불암산역</td><td>5</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-success">2000</span></td><td>경기운수</td><td>진벌리</td><td>강남역</td><td>18</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-success">2000-1</span></td><td>경기운수</td><td>진벌리</td><td>강남역</td><td>11</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-primary">11</span></td><td>경기버스</td><td>내촌</td><td>강변역</td><td>5</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-success">7007</span></td><td>경기버스</td><td>광릉내</td><td>강남역</td><td>12</td></tr>
+                            <tr><td>진접</td><td><span class="badge badge-warning">8012</span></td><td>경기버스</td><td>광릉내</td><td>잠실역</td><td>15</td></tr>
+                            <tr><td>별내</td><td><span class="badge badge-warning">1001</span></td><td>대원운수</td><td>별내동</td><td>잠실역</td><td>13</td></tr>
+                            <tr><td>다산</td><td><span class="badge badge-warning">1003</span></td><td>대원운수</td><td>다산진건지구</td><td>잠실역</td><td>10</td></tr>
+                            <tr><td>다산</td><td><span class="badge badge-primary">1006</span></td><td>대원운수</td><td>다산진건지구</td><td>강변역</td><td>7</td></tr>
+                            <tr><td>호평평내</td><td><span class="badge badge-warning">1000</span></td><td>경기운수</td><td>호평동</td><td>잠실역</td><td>6</td></tr>
+                            <tr><td>호평평내</td><td><span class="badge badge-warning">1000-1</span></td><td>대원운수</td><td>호평동</td><td>잠실역</td><td>2</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-success">1100</span></td><td>대원운수</td><td>차산리</td><td>신사역</td><td>10</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-warning">1200</span></td><td>대원운수</td><td>차산리</td><td>잠실역</td><td>8</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-warning">1200-1</span></td><td>대원운수</td><td>차산리</td><td>잠실역</td><td>8</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-success">8001</span></td><td>대원운수</td><td>대성리</td><td>신사역</td><td>3</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-warning">8002</span></td><td>대원운수</td><td>대성리</td><td>잠실역</td><td>23</td></tr>
+                            <tr><td>화도</td><td><span class="badge badge-warning">8002-1</span></td><td>대원운수</td><td>대성리</td><td>잠실역</td><td>8</td></tr>
+                            <tr><td>와부</td><td><span class="badge badge-primary">1660</span></td><td>대원운수</td><td>도곡리</td><td>강변역</td><td>8</td></tr>
+                            <tr><td>와부</td><td><span class="badge badge-warning">1670</span></td><td>대원운수</td><td>도곡리</td><td>잠실역</td><td>11</td></tr>
+                            <tr><td>와부</td><td><span class="badge badge-warning">1670-1</span></td><td>대원운수</td><td>도곡리</td><td>잠실역</td><td>8</td></tr>
+                            <tr><td>와부</td><td><span class="badge badge-success">1700</span></td><td>대원운수</td><td>도곡리</td><td>강남역</td><td>9</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Express Bus Section -->
+        <section id="express" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-red"><i class="fas fa-rocket"></i></div>
+                    <div><div class="card-title"><i class="fas fa-bolt"></i> 광역급행버스 (M버스)</div><div class="card-subtitle">총 5개 노선 49대</div></div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="bus-card">
+                        <div class="bus-number bg-red"><i class="fas fa-m"></i> M2341</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 화도월산부영 → 잠실광역환승센터</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-bus"></i> 대수</span>
+                            <span class="value">6대</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-building"></i> 운수업체</span>
+                            <span class="value">대원운수</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2019.04.29</span>
+                        </div>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-red"><i class="fas fa-m"></i> M2352</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 평내동 → 잠실광역환승센터</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-bus"></i> 대수</span>
+                            <span class="value">10대</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-building"></i> 운수업체</span>
+                            <span class="value">대원운수</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2021.05.10</span>
+                        </div>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-red"><i class="fas fa-m"></i> M2353</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 다산진건지구 → 잠실광역환승센터</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-bus"></i> 대수</span>
+                            <span class="value">10대</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-building"></i> 운수업체</span>
+                            <span class="value">대원운수</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2022.03.02</span>
+                        </div>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-red"><i class="fas fa-m"></i> M2316</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 화도영남아파트 → 잠실광역환승센터</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-bus"></i> 대수</span>
+                            <span class="value">10대</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-building"></i> 운수업체</span>
+                            <span class="value">경기고속</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2012.06.08</span>
+                        </div>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-red"><i class="fas fa-m"></i> M2323</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 호평동 → 잠실광역환승센터</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-bus"></i> 대수</span>
+                            <span class="value">13대</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-building"></i> 운수업체</span>
+                            <span class="value">경기고속</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2013.10.14</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Thank You Bus Section -->
+        <section id="thankyou" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-pink"><i class="fas fa-heart"></i></div>
+                    <div><div class="card-title"><i class="fas fa-hand-holding-heart"></i> 땡큐버스 & 트롤리버스</div><div class="card-subtitle">땡큐버스 15개 노선 130대 / 트롤리버스 4개 노선 10대</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--pink)"><i class="fas fa-heart"></i></div>
+                        <div class="stat-value">15</div>
+                        <div class="stat-label"><i class="fas fa-route"></i> 땡큐버스 노선</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-bus"></i></div>
+                        <div class="stat-value">130대</div>
+                        <div class="stat-label"><i class="fas fa-list-ol"></i> 땡큐버스 차량</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-plug"></i></div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-label"><i class="fas fa-leaf"></i> 트롤리 노선</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-charging-station"></i></div>
+                        <div class="stat-value">10대</div>
+                        <div class="stat-label"><i class="fas fa-bolt"></i> 트롤리 차량</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-heart"></i> 땡큐버스 운행 노선</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="노선 검색..." onkeyup="searchTable(this, 'thankyou-table')">
+                    </div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="thankyou-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-map-pin"></i> 권역</th>
+                                <th><i class="fas fa-bus"></i> 노선번호</th>
+                                <th><i class="fas fa-building"></i> 운수업체</th>
+                                <th><i class="fas fa-location-dot"></i> 기점</th>
+                                <th><i class="fas fa-flag-checkered"></i> 종점</th>
+                                <th><i class="fas fa-hashtag"></i> 대수</th>
+                                <th><i class="fas fa-plug"></i> 트롤리</th>
+                                <th><i class="fas fa-calendar"></i> 개통</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>다산</td><td><span class="badge badge-primary">땡큐10</span></td><td>대원운수</td><td>다산차고지</td><td>호평알프하임</td><td>8</td><td>-</td><td>2019.12.24</td></tr>
+                            <tr><td>다산</td><td><span class="badge badge-primary">땡큐11</span></td><td>대원운수</td><td>수택차고지</td><td>다산역</td><td>9</td><td>-</td><td>2020.05.22</td></tr>
+                            <tr><td>다산</td><td><span class="badge badge-primary">땡큐12</span></td><td>대원운수</td><td>수택차고지</td><td>다산역</td><td>4</td><td>-</td><td>2023.01.01</td></tr>
+                            <tr><td>별내</td><td><span class="badge badge-success">땡큐20</span></td><td>태산운수</td><td>별내차고지</td><td>금곡동</td><td>12</td><td>-</td><td>2020.01.06</td></tr>
+                            <tr><td>별내</td><td><span class="badge badge-success">땡큐30</span></td><td>대원운수</td><td>청학리</td><td>금곡동</td><td>10</td><td>-</td><td>2020.04.29</td></tr>
+                            <tr><td>별내</td><td><span class="badge badge-success">땡큐50</span></td><td>대원운수</td><td>청학리</td><td>금곡동</td><td>16</td><td>-</td><td>2020.03.30</td></tr>
+                            <tr><td>별내</td><td><span class="badge badge-success">땡큐85</span></td><td>흥안운수</td><td>별내차고지</td><td>별내역</td><td>11</td><td>-</td><td>2023.04.01</td></tr>
+                            <tr><td>진접오남</td><td><span class="badge badge-warning">땡큐31</span></td><td>경기버스</td><td>진벌리</td><td>극동성호@</td><td>9</td><td>-</td><td>2023.04.01</td></tr>
+                            <tr><td>진접오남</td><td><span class="badge badge-warning">땡큐60</span></td><td>경기운수</td><td>대경대</td><td>금곡동</td><td>12</td><td>-</td><td>2020.03.30</td></tr>
+                            <tr><td>진접오남</td><td><span class="badge badge-warning">땡큐70</span></td><td>경기운수</td><td>진벌리</td><td>금곡동</td><td>10</td><td><span class="badge badge-success"><i class="fas fa-plug"></i> 1</span></td><td>2019.12.24</td></tr>
+                            <tr><td>진접오남</td><td><span class="badge badge-warning">땡큐90</span></td><td>경기버스</td><td>광릉내</td><td>가운지구</td><td>14</td><td><span class="badge badge-success"><i class="fas fa-plug"></i> 1</span></td><td>2020.02.19</td></tr>
+                            <tr><td>와부</td><td><span class="badge badge-primary">땡큐61</span></td><td>태화상운</td><td>우성아파트</td><td>금곡동</td><td>9</td><td>-</td><td>2020.03.09</td></tr>
+                            <tr><td>북한강변</td><td><span class="badge badge-danger">땡큐58-3</span></td><td>대원운수</td><td>대성리</td><td>도농역</td><td>6</td><td><span class="badge badge-success"><i class="fas fa-plug"></i> 4</span></td><td>2023.01.01</td></tr>
+                            <tr><td>화도수동</td><td><span class="badge badge-secondary">58</span></td><td>대원운수</td><td>차산리차고지</td><td>다산유적지</td><td>6</td><td><span class="badge badge-success"><i class="fas fa-plug"></i> 4</span></td><td>2022.06.24</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Taxi Section -->
+        <section id="taxi" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-warning"><i class="fas fa-taxi"></i></div>
+                    <div><div class="card-title"><i class="fas fa-car"></i> 택시 현황</div><div class="card-subtitle">총 1,291대 운영</div></div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-building"></i></div>
+                        <div class="stat-value">342대</div>
+                        <div class="stat-label"><i class="fas fa-briefcase"></i> 법인택시 (6개 업체)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-user"></i></div>
+                        <div class="stat-value">949대</div>
+                        <div class="stat-label"><i class="fas fa-id-card"></i> 개인택시 (1개 조합)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-volume-off"></i></div>
+                        <div class="stat-value">3대</div>
+                        <div class="stat-label"><i class="fas fa-deaf"></i> 고요한택시</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-green"><i class="fas fa-leaf"></i></div>
+                    <div><div class="card-title"><i class="fas fa-gas-pump"></i> 택시 유종별 현황</div><div class="card-subtitle">2025년 10월 기준</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--gray)"><i class="fas fa-oil-can"></i></div>
+                        <div class="stat-value">1,103대</div>
+                        <div class="stat-label"><i class="fas fa-fire"></i> LPG</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-plug"></i></div>
+                        <div class="stat-value">184대</div>
+                        <div class="stat-label"><i class="fas fa-charging-station"></i> 전기</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-leaf"></i></div>
+                        <div class="stat-value">4대</div>
+                        <div class="stat-label"><i class="fas fa-recycle"></i> 하이브리드</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-calculator"></i></div>
+                        <div class="stat-value">1,291대</div>
+                        <div class="stat-label"><i class="fas fa-check-double"></i> 총계</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4><i class="fas fa-home" style="color:var(--primary)"></i> 남부 택시쉼터</h4>
+                    <div class="info-item"><span class="label"><i class="fas fa-map-marker-alt"></i> 위치</span><span class="value">늘을1로 39-36 (호평동)</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-ruler-combined"></i> 규모</span><span class="value">연면적 446㎡, 2층</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-clock"></i> 운영시간</span><span class="value">평일 09:00~18:00</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-users"></i> 이용</span><span class="value">50인/일</span></div>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fas fa-home" style="color:var(--secondary)"></i> 북부 택시쉼터</h4>
+                    <div class="info-item"><span class="label"><i class="fas fa-map-marker-alt"></i> 위치</span><span class="value">경복대로 120-9</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-ruler-combined"></i> 규모</span><span class="value">연면적 340.85㎡, 2층</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-clock"></i> 운영시간</span><span class="value">평일 09:00~18:00</span></div>
+                    <div class="info-item"><span class="label"><i class="fas fa-users"></i> 이용</span><span class="value">20인/일</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-cyan"><i class="fas fa-map-location-dot"></i></div>
+                    <div><div class="card-title"><i class="fas fa-parking"></i> 택시승차대 현황</div><div class="card-subtitle">총 49개소 (포스트형 20 / 쉘터형 29)</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-sign-hanging"></i></div>
+                        <div class="stat-value">20</div>
+                        <div class="stat-label"><i class="fas fa-poll"></i> 포스트형</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-house-user"></i></div>
+                        <div class="stat-value">29</div>
+                        <div class="stat-label"><i class="fas fa-building"></i> 쉘터형</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-solar-panel"></i></div>
+                        <div class="stat-value">7</div>
+                        <div class="stat-label"><i class="fas fa-sun"></i> 태양광조명</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-layer-group"></i></div>
+                        <div class="stat-value">49</div>
+                        <div class="stat-label"><i class="fas fa-check-double"></i> 총계</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Airport Bus Section -->
+        <section id="airport" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-cyan"><i class="fas fa-plane"></i></div>
+                    <div><div class="card-title"><i class="fas fa-plane-departure"></i> 공항버스 운행 현황</div><div class="card-subtitle">경기고속 운영</div></div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="bus-card">
+                        <div class="bus-number bg-cyan"><i class="fas fa-plane"></i> 8843</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 마석 → 인천공항</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-route"></i> 거리</span>
+                            <span class="value">120.8km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-clock"></i> 운행</span>
+                            <span class="value">22회 (심야 4)</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-map-pin"></i> 경유: 평내, 금곡, 도농역, 인창동, 김포공항
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-cyan"><i class="fas fa-plane"></i> 8844</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 진벌리 → 인천공항</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-route"></i> 거리</span>
+                            <span class="value">129.3km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-clock"></i> 운행</span>
+                            <span class="value">7회 (심야 2)</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-map-pin"></i> 경유: 광릉내, 장현, 진접택지, 오남역, 별내동
+                        </p>
+                    </div>
+                    <div class="bus-card">
+                        <div class="bus-number bg-cyan"><i class="fas fa-plane"></i> 4800</div>
+                        <div class="bus-route"><i class="fas fa-location-dot"></i> 덕소 → 인천공항</div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-route"></i> 거리</span>
+                            <span class="value">112.2km</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-clock"></i> 운행</span>
+                            <span class="value">5회</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> 개통</span>
+                            <span class="value">2025.3.1</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--gray)">
+                            <i class="fas fa-map-pin"></i> 경유: 다산동, 갈매동, 불암산영업소
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Low Floor Bus Section -->
+        <section id="lowfloor" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon bg-green"><i class="fas fa-wheelchair"></i></div>
+                    <div><div class="card-title"><i class="fas fa-universal-access"></i> 저상버스 현황</div><div class="card-subtitle">총 38개 노선 169대 (2025.10.31 기준)</div></div>
+                </div>
+                <div class="grid grid-4">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--primary)"><i class="fas fa-bus"></i></div>
+                        <div class="stat-value">151대</div>
+                        <div class="stat-label"><i class="fas fa-city"></i> 일반시내버스 (30개 노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--success)"><i class="fas fa-house"></i></div>
+                        <div class="stat-value">18대</div>
+                        <div class="stat-label"><i class="fas fa-map-marked"></i> 마을버스 (8개 노선)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--accent)"><i class="fas fa-charging-station"></i></div>
+                        <div class="stat-value">152대</div>
+                        <div class="stat-label"><i class="fas fa-plug"></i> 전기저상</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="color: var(--warning)"><i class="fas fa-gas-pump"></i></div>
+                        <div class="stat-value">17대</div>
+                        <div class="stat-label"><i class="fas fa-fire"></i> CNG저상</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-wheelchair"></i> 일반시내버스 저상버스 현황</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="노선 검색..." onkeyup="searchTable(this, 'lowfloor-table')">
+                    </div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="lowfloor-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-building"></i> 운수업체</th>
+                                <th><i class="fas fa-bus"></i> 노선번호</th>
+                                <th><i class="fas fa-location-dot"></i> 기점</th>
+                                <th><i class="fas fa-flag-checkered"></i> 종점</th>
+                                <th><i class="fas fa-hashtag"></i> 대수</th>
+                                <th><i class="fas fa-plug"></i> 전기</th>
+                                <th><i class="fas fa-fire"></i> CNG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>대원운수</td><td><span class="badge badge-primary">1</span></td><td>진벌리</td><td>강변역</td><td>7</td><td>-</td><td>7</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-primary">1-4</span></td><td>차산리</td><td>미사동</td><td>12</td><td>11</td><td>1</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-success">168</span></td><td>차산리</td><td>도곡리</td><td>2</td><td>2</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-warning">7</span></td><td>훈련장입구</td><td>삼익아파트</td><td>2</td><td>2</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-primary">55</span></td><td>사능차고지</td><td>55번종점</td><td>4</td><td>4</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-success">65</span></td><td>차산리</td><td>청량리</td><td>12</td><td>12</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-success">65-1</span></td><td>차산리</td><td>석계역</td><td>3</td><td>3</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-warning">97</span></td><td>호평동</td><td>아산병원</td><td>7</td><td>7</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-primary">98</span></td><td>차산리</td><td>오남</td><td>3</td><td>3</td><td>-</td></tr>
+                            <tr><td>대원운수</td><td><span class="badge badge-primary">112-1</span></td><td>도곡리</td><td>강변역</td><td>6</td><td>-</td><td>6</td></tr>
+                            <tr><td>경기버스</td><td><span class="badge badge-success">23</span></td><td>내촌</td><td>천호역</td><td>23</td><td>23</td><td>-</td></tr>
+                            <tr><td>경기버스</td><td><span class="badge badge-warning">707</span></td><td>진벌리</td><td>청량리</td><td>6</td><td>6</td><td>-</td></tr>
+                            <tr><td>경기버스</td><td><span class="badge badge-primary">155</span></td><td>청학리</td><td>석계역</td><td>9</td><td>9</td><td>-</td></tr>
+                            <tr><td>경기버스</td><td><span class="badge badge-primary">115</span></td><td>사능</td><td>석계역</td><td>8</td><td>8</td><td>-</td></tr>
+                            <tr><td>경기운수</td><td><span class="badge badge-success">9</span></td><td>진벌리</td><td>강변역</td><td>14</td><td>14</td><td>-</td></tr>
+                            <tr><td>경기운수</td><td><span class="badge badge-warning">10-5</span></td><td>호평동</td><td>당고개역</td><td>2</td><td>2</td><td>-</td></tr>
+                            <tr><td>경기운수</td><td><span class="badge badge-primary">21</span></td><td>경복대</td><td>의정부역</td><td>2</td><td>2</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p><i class="fas fa-copyright"></i> 2025 남양주시 대중교통과. <i class="fas fa-code"></i> All rights reserved.</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(tab.dataset.section).classList.add('active');
+            });
+        });
+
+        function searchTable(input, tableId) {
+            const filter = input.value.toLowerCase();
+            const rows = document.getElementById(tableId).getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(filter)) { found = true; break; }
+                }
+                rows[i].style.display = found ? '' : 'none';
+            }
+        }
+
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.querySelector('.scroll-top');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+    </script>
+</body>
+</html>
